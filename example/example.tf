@@ -13,6 +13,7 @@ locals {
     tier         = "dta"
   }
 
+
 }
 
 module "resource_groups" {
@@ -83,15 +84,27 @@ module "vnet_subnets_001" {
     ]
   }
 }
-
-resource "azurerm_network_interface" "example" {
-  name                = "example-nic"
+module "nic_obj" {
+  source              = "../"
   location            = var.location
   resource_group_name = module.resource_groups.rg_output.1.name
-
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = module.vnet_subnets_001.snet_output.001.id
-    private_ip_address_allocation = "Dynamic"
+  subnet_id           = module.vnet_subnets_001.snet_output.001.id
+ instances = {
+    nic1 = {
+      index = 1
+      ip_config = {
+        n1 = {
+          is_primary           = true
+          public_ip_address_id = null
+          private_ip_address   = null
+          enable_ip_forwarding = false
+        }
+      }
+    }
   }
+  naming_convention_info = local.naming_convention_info
+  tags                   = local.tags
 }
+
+
+

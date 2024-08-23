@@ -26,11 +26,6 @@ variable "dns_servers" {
   default = null
 }
 
-variable "subnet_id" {
-  type        = string
-  description = "specify the subnet id for the nic"
-}
-
 variable "naming_convention_info" {
   description = "(Required) Specify the naming convention information to the resource."
   # type = object({
@@ -59,8 +54,10 @@ variable "enable_ip_forwarding" {
   default = false
 }
 
-variable "vnet_001_address_space" {
-  type        = list(string)
-  description = "The address space of the virtual network"
-  
+
+
+variable "subnet_id" {
+  type        = string
+  description = "The id of the subnet"
 }
+
