@@ -44,7 +44,7 @@ module "vnet_subnets_001" {
   create_nsg             = true
 
   subnets = {
-    001 = {
+    1 = {
       name                                      = var.public_integration_snet_name
       address_prefixes                          = ["10.0.10.0/24"]
       service_endpoints                         = null
@@ -62,7 +62,7 @@ module "nic_obj" {
   source                         = "git::https://github.com/BrettOJ/tf-az-module-network-interface?ref=main"
   location                       = var.location
   resource_group_name            = module.resource_groups.rg_output.1.name
-  subnet_id                      = module.vnet_subnets_001.snet_output.001.id
+  subnet_id                      = module.vnet_subnets_001.snet_output[1].id
   dns_servers                    = var.dns_servers
   edge_zone                      = var.edge_zone
   auxiliary_mode                 = var.auxiliary_mode
@@ -78,15 +78,17 @@ module "nic_obj" {
       index = 1
       ip_config = {
         n1 = {
-          is_primary           = true
-          public_ip_address_id = null
-          private_ip_address   = null
-          enable_ip_forwarding = false
+          subnet_id                                          = module.vnet_subnets_001.snet_output[1].id
+          is_primary                                         = true
+          public_ip_address_id                               = null
+          gateway_load_balancer_frontend_ip_configuration_id = null
+          private_ip_address_allocation                      = "Static"
+          private_ip_address                                 = null
+          private_ip_address_version                         = null
         }
       }
     }
   }
-
 }
 
 
