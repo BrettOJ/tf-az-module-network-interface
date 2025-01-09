@@ -64,11 +64,6 @@ variable "edge_zone" {
   default = null
 }
 
-variable "subnet_id" {
-  type        = string
-  description = "The id of the subnet"
-}
-
 variable "internal_dns_name_label" {
   type    = string
   default = null
