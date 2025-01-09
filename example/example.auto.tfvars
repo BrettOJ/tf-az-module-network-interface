@@ -7,7 +7,7 @@ subnet_delegation_001 = {
 }
 vnet_001_address_space = ["10.0.0.0/16"]
 
-dns_servers = ["value"]
+dns_servers = null
 
 edge_zone                      = null
 auxiliary_mode                 = null
