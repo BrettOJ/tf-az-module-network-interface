@@ -29,10 +29,10 @@ variable "dns_servers" {
 variable "naming_convention_info" {
   description = "(Required) Specify the naming convention information to the resource."
   type = object({
-    name    = string
-    site    = string
-    env     = string
-    app     = string
+    name = string
+    site = string
+    env  = string
+    app  = string
   })
 }
 
@@ -42,7 +42,7 @@ variable "tags" {
 }
 
 variable "dependencies" {
-  type        = list
+  type        = list(any)
   description = "List of dependecies modules or resources"
   default     = null
 }

@@ -24,18 +24,6 @@ module "resource_groups" {
   }
 }
 
-module "log_analytics_workspace" {
-  source                 = "git::https://github.com/BrettOJ/tf-az-module-log-analytics?ref=main"
-  resource_group_name    = module.resource_groups.rg_output.1.name
-  location               = var.location
-  sku                    = "PerGB2018"
-  naming_convention_info = local.naming_convention_info
-  tags                   = local.tags
-  solution_plan_map      = null #local.solution_plan_map 
-}
-
-
-
 module "virtual_network_001" {
   source                 = "git::https://github.com/BrettOJ/tf-az-module-virtual-network?ref=main"
   resource_group_name    = module.resource_groups.rg_output.1.name
@@ -69,33 +57,23 @@ module "vnet_subnets_001" {
     }
   }
 }
-  /*
-  diag_object = {
-    log_analytics_workspace_id = module.log_analytics_workspace.loga_output.id
-    log = [
-      ["AllLogs", true, true, 80],
-    ]
-    metric = [
-      ["AllMetrics", true, true, 80],
-    ]
-  }
-*/
+
 module "nic_obj" {
-  source              = "git::https://github.com/BrettOJ/tf-az-module-network-interface?ref=main"
-  location            = var.location
-  resource_group_name = module.resource_groups.rg_output.1.name
-  subnet_id           = module.vnet_subnets_001.snet_output.001.id
-  dns_servers          = var.dns_servers
-  edge_zone     = var.edge_zone
+  source                         = "git::https://github.com/BrettOJ/tf-az-module-network-interface?ref=main"
+  location                       = var.location
+  resource_group_name            = module.resource_groups.rg_output.1.name
+  subnet_id                      = module.vnet_subnets_001.snet_output.001.id
+  dns_servers                    = var.dns_servers
+  edge_zone                      = var.edge_zone
   auxiliary_mode                 = var.auxiliary_mode
   auxiliary_sku                  = var.auxiliary_sku
   ip_forwarding_enabled          = var.ip_forwarding_enabled
   accelerated_networking_enabled = var.accelerated_networking_enabled
   internal_dns_name_label        = var.internal_dns_name_label
-  naming_convention_info = local.naming_convention_info
-  tags                   = local.tags
-  
- instances = {
+  naming_convention_info         = local.naming_convention_info
+  tags                           = local.tags
+
+  instances = {
     nic1 = {
       index = 1
       ip_config = {
