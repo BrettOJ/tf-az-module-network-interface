@@ -14,6 +14,7 @@ variable "instances" {
     index = number
     ip_config = map(object({
       public_ip_address_id = string
+      subnet_id            = string
       is_primary           = bool
       private_ip_address   = string
       gateway_load_balancer_frontend_ip_configuration_id = string
