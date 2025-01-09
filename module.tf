@@ -7,7 +7,13 @@ resource "azurerm_network_interface" "nic_obj" {
   location             = var.location
   resource_group_name  = var.resource_group_name
   dns_servers          = var.dns_servers
-
+  edge_zone = var.edge_zone
+  auxiliary_mode                 = var.auxiliary_mode
+  auxiliary_sku                  = var.auxiliary_sku
+  ip_forwarding_enabled          = var.ip_forwarding_enabled
+  accelerated_networking_enabled = var.accelerated_networking_enabled
+  internal_dns_name_label        = var.internal_dns_name_label
+  
   dynamic "ip_configuration" {
     for_each = each.value.ip_config
     content {
@@ -17,6 +23,8 @@ resource "azurerm_network_interface" "nic_obj" {
       private_ip_address_allocation = ip_configuration.value.private_ip_address == null ? "Dynamic" : "Static"
       public_ip_address_id          = ip_configuration.value.public_ip_address_id == null ? null : ip_configuration.value.public_ip_address_id
       private_ip_address            = ip_configuration.value.private_ip_address == null ? null : ip_configuration.value.private_ip_address
+  gateway_load_balancer_frontend_ip_configuration_id = ip_configuration.gateway_load_balancer_frontend_ip_configuration_id == null ? null : ip_configuration.gateway_load_balancer_frontend_ip_configuration_id 
+      private_ip_address_version                         = ip_configuration.private_ip_address_version == null ? null : ip_configuration.priv
     }
   }
   depends_on = [var.dependencies]

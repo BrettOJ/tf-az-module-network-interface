@@ -5,15 +5,11 @@ locals {
   }
 
   naming_convention_info = {
-    name         = "001"
-    project_code = "nb"
-    env          = "dev"
-    zone         = "z1"
-    agency_code  = "konjur"
-    tier         = "dta"
+    site = "tst"
+    env  = "env"
+    app  = "zone"
+    name = "001"
   }
-
-
 }
 
 module "resource_groups" {
@@ -60,7 +56,6 @@ module "vnet_subnets_001" {
   create_nsg             = true
 
   subnets = {
-
     001 = {
       name                                      = var.public_integration_snet_name
       address_prefixes                          = ["10.0.10.0/24"]
@@ -72,8 +67,9 @@ module "vnet_subnets_001" {
       nsg_outbound                              = []
       delegation                                = null #var.subnet_delegation_001
     }
-
   }
+}
+  /*
   diag_object = {
     log_analytics_workspace_id = module.log_analytics_workspace.loga_output.id
     log = [
@@ -83,12 +79,22 @@ module "vnet_subnets_001" {
       ["AllMetrics", true, true, 80],
     ]
   }
-}
+*/
 module "nic_obj" {
-  source              = "../"
+  source              = "git::https://github.com/BrettOJ/tf-az-module-network-interface?ref=main"
   location            = var.location
   resource_group_name = module.resource_groups.rg_output.1.name
   subnet_id           = module.vnet_subnets_001.snet_output.001.id
+  dns_servers          = var.dns_servers
+  edge_zone     = var.edge_zone
+  auxiliary_mode                 = var.auxiliary_mode
+  auxiliary_sku                  = var.auxiliary_sku
+  ip_forwarding_enabled          = var.ip_forwarding_enabled
+  accelerated_networking_enabled = var.accelerated_networking_enabled
+  internal_dns_name_label        = var.internal_dns_name_label
+  naming_convention_info = local.naming_convention_info
+  tags                   = local.tags
+  
  instances = {
     nic1 = {
       index = 1
@@ -102,8 +108,7 @@ module "nic_obj" {
       }
     }
   }
-  naming_convention_info = local.naming_convention_info
-  tags                   = local.tags
+
 }
 
 

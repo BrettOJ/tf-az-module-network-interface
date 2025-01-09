@@ -28,14 +28,12 @@ variable "dns_servers" {
 
 variable "naming_convention_info" {
   description = "(Required) Specify the naming convention information to the resource."
-  # type = object({
-  #   name         = string
-  #   agency_code  = string
-  #   project_code = string
-  #   env          = string
-  #   zone         = string
-  #   tier         = string
-  # })
+  type = object({
+    name    = string
+    site    = string
+    env     = string
+    app     = string
+  })
 }
 
 variable "tags" {
@@ -49,15 +47,37 @@ variable "dependencies" {
   default     = null
 }
 
-variable "enable_ip_forwarding" {
+variable "ip_forwarding_enabled" {
   type    = bool
   default = false
 }
 
+variable "accelerated_networking_enabled" {
+  type    = bool
+  default = false
+}
 
+variable "edge_zone" {
+  type    = string
+  default = null
+}
 
 variable "subnet_id" {
   type        = string
   description = "The id of the subnet"
 }
 
+variable "internal_dns_name_label" {
+  type    = string
+  default = null
+}
+
+variable "auxiliary_mode" {
+  type    = string
+  default = null
+}
+
+variable "auxiliary_sku" {
+  type    = string
+  default = null
+}
