@@ -16,6 +16,8 @@ variable "instances" {
       public_ip_address_id = string
       is_primary           = bool
       private_ip_address   = string
+      gateway_load_balancer_frontend_ip_configuration_id = string
+      private_ip_address_version = string
     }))
   }))
   description = "(Required) Specifies the Number of nic resouces to be created ."
